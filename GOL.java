@@ -36,6 +36,59 @@ public class GOL extends JPanel implements Runnable{
     }
     public void updateState(){
         int[][] newState=new int[GAMEW][GAMEH];
+        for(int x=0;x<GAMEW;x++){
+            for(int y=0;y<GAMEH;y++){
+                if(this.game[x][y]==1){
+                    if(checkDeath(x,y)){
+                        newState[x][y]=0;
+                    }else{
+                        newState[x][y]=1;
+                    }
+                }else{
+                   if(checkLife(x,y)){
+                        newState[x][y]=1;
+                    }else{
+                        newState[x][y]=0;
+                    } 
+                }
+            }
+        }
+    }
+
+    public Boolean checkDeath(int x, int y){
+        int counter=0;
+        if(x!=0 && x!=GAMEW && y!=0 && y!=GAMEH){
+            for(int i=x-1;i<x+1;i++){
+                for(int j=y-1;j<y+1;j++){
+                    if(this.game[i][j]==1){
+                        counter++;
+                    }
+                }
+            }
+        }
+        if(counter>=3){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public Boolean checkLife(int x, int y){
+        int counter=0;
+        if(x!=0 && x!=GAMEW && y!=0 && y!=GAMEH){
+            for(int i=x-1;i<x+1;i++){
+                for(int j=y-1;j<y+1;j++){
+                    if(this.game[i][j]==1){
+                        counter++;
+                    }
+                }
+            }
+        }
+        if(counter>=3){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     @Override
