@@ -23,6 +23,14 @@ public class GOL extends JPanel implements Runnable{
         // Center and show
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        int iters=10;
+        while(iters>0){
+            //System.out.println("ticking...");
+            this.updateState();
+            frame.repaint();
+            iters--;
+        }
+
     }
 
     public void initialState(){
@@ -35,17 +43,20 @@ public class GOL extends JPanel implements Runnable{
         }
     }
     public void updateState(){
+        System.out.println("Updating...");
         int[][] newState=new int[GAMEW][GAMEH];
-        for(int x=0;x<GAMEW;x++){
-            for(int y=0;y<GAMEH;y++){
+        for(int x=1;x<GAMEW-1;x++){
+            for(int y=1;y<GAMEH-1;y++){
                 if(this.game[x][y]==1){
                     if(checkDeath(x,y)){
+                        //System.out.println("killing cell...");
                         newState[x][y]=0;
                     }else{
                         newState[x][y]=1;
                     }
                 }else{
                    if(checkLife(x,y)){
+                    //System.out.println("reviving cell...");
                         newState[x][y]=1;
                     }else{
                         newState[x][y]=0;
@@ -53,6 +64,16 @@ public class GOL extends JPanel implements Runnable{
                 }
             }
         }
+        Boolean same = true;
+        for(int x=0;x<GAMEW;x++){
+            for(int y=0;y<GAMEH;y++){
+                if(this.game[x][y]!=newState[x][y]){
+                    same=false;
+                }
+            }
+        }
+        System.out.println(same);
+        this.game=newState;
     }
 
     public Boolean checkDeath(int x, int y){
@@ -66,7 +87,7 @@ public class GOL extends JPanel implements Runnable{
                 }
             }
         }
-        if(counter>=3){
+        if(counter<2||counter>3){
             return true;
         }else{
             return false;
@@ -84,7 +105,7 @@ public class GOL extends JPanel implements Runnable{
                 }
             }
         }
-        if(counter>=3){
+        if(counter==3){
             return true;
         }else{
             return false;
@@ -110,8 +131,12 @@ public class GOL extends JPanel implements Runnable{
     @Override
     public void run() {
     }
-    public static void main(String[] args){
+    public static void main(String[] args) throws InterruptedException{
+        Thread t=new Thread();
+        t.start();
         GOL gol=new GOL();
         gol.Main();
+        
+        
     }
 }
